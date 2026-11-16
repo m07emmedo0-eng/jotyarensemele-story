@@ -26,6 +26,116 @@ section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.se
 <section id="machines"><div class="wrap"><div class="section-heading"><h2>اختر نوع الآلة</h2><p>تصفح الموديلات التي نخدمها وأرسل طلب القطعة المطلوبة</p></div><div class="grid"><article class="card"><img src="675063.jpg" alt="جرار New Holland T7" loading="lazy"><div class="content"><h3>قطع غيار الجرارات</h3><p>سلاسل TM وT7000 وT7 وT6 وTD وTD5.00</p><div class="tags"><span class="tag">TM140</span><span class="tag">TM155</span><span class="tag">T7030</span><span class="tag">T7040</span><span class="tag">T7.210</span><span class="tag">T7.260</span><span class="tag">T6070</span><span class="tag">T6080</span></div><a class="btn blue" href="#products">استفسر عن قطع الجرار</a></div></article><article class="card"><img src="combine-harvester-tc590-st5-new-holland(4).webp" alt="حاصدة New Holland" loading="lazy"><div class="content"><h3>قطع غيار الحاصدات</h3><p>سلاسل TC54 وTC56 وTC5000 وTC5.00</p><div class="tags"><span class="tag">TC54</span><span class="tag">TC56</span><span class="tag">TC5070</span><span class="tag">TC5000</span><span class="tag">TC5.00</span></div><a class="btn blue" href="#products">استفسر عن قطع الحاصدة</a></div></article></div></div></section>
 <section id="parts" class="parts"><div class="wrap"><div class="section-heading"><h2>أقسام قطع الغيار</h2><p>اختر القسم للانتقال مباشرة إلى نموذج الاستفسار</p></div><div class="part-grid" id="partsGrid"></div></div></section>
 <section id="products"><div class="wrap"><div class="section-heading"><h2>ابحث عن القطعة المناسبة</h2><p>حدد موديل الآلة ونوع القطعة، ثم أرسل طلبك إلى واتساب المتجر</p></div><form class="search-box" id="requestForm"><div class="fields"><div class="field"><label for="model">موديل الآلة</label><select id="model" required><option value="">اختر موديل الآلة</option><optgroup label="الجرارات"><option>TM140</option><option>TM155</option><option>T7030</option><option>T7040</option><option>T7.210</option><option>T7.260</option><option>T6070</option><option>T6080</option><option>TD</option><option>TD5.00</option><option>T6</option><option>موديل جرار آخر</option></optgroup><optgroup label="الحاصدات"><option>TC54</option><option>TC56</option><option>TC5070</option><option>TC5000</option><option>TC5.00</option><option>موديل حاصدة آخر</option></optgroup></select></div><div class="field"><label for="category">نوع القطعة</label><select id="category" required><option value="">اختر القسم</option><option>قطع المحركات</option><option>ناقل الحركة والقابض</option><option>المحاور</option><option>الهيدروليك</option><option>الكهرباء والحساسات</option><option>قطع الحصاد والدراس</option><option>أخرى</option></select></div><div class="field full"><label for="partName">اسم القطعة المطلوبة</label><input id="partName" required maxlength="160" placeholder="مثال: فلتر زيت المحرك"></div></div><div class="actions"><button class="btn" type="submit">إرسال الاستفسار عبر واتساب</button></div><div class="notice">الأسعار والتوفر غير معروضين على الموقع. يراجع المتجر الاستفسار أولاً ويحدد السعر والتوفر قبل متابعة الطلب. لا يتم الدفع عبر هذه الصفحة.</div></form></div></section>
+
+<section id="catalog" style="padding:55px 6%;background:#f4f7fb">
+  <h2 style="text-align:center;color:#092c56">
+    كتالوج قطع الغيار
+  </h2>
+  <p style="text-align:center">
+    ابحث عن القطعة المطلوبة وأرسل استفسارك إلى المتجر
+  </p>
+
+  <div style="max-width:900px;margin:25px auto">
+    <input
+      id="catalogSearch"
+      type="search"
+      placeholder="ابحث باسم القطعة..."
+      style="width:100%;padding:16px;border:1px solid #ccc;border-radius:12px"
+    >
+    <p id="catalogCount" aria-live="polite"></p>
+    <div id="catalogResults"></div>
+    <div style="text-align:center;margin-top:20px">
+      <button id="catalogMore" type="button" hidden>
+        عرض المزيد
+      </button>
+    </div>
+  </div>
+
+let catalogItems = [];
+let catalogVisible = 20;
+
+const catalogSearch = document.getElementById("catalogSearch");
+const catalogResults = document.getElementById("catalogResults");
+const catalogCount = document.getElementById("catalogCount");
+const catalogMore = document.getElementById("catalogMore");
+
+function renderCatalog() {
+  const query = catalogSearch.value.trim().toLowerCase();
+
+  const filtered = catalogItems.filter(item =>
+    item.name.toLowerCase().includes(query)
+  );
+
+  catalogResults.replaceChildren();
+
+  filtered.slice(0, catalogVisible).forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.marginBottom = "12px";
+
+    const content = document.createElement("div");
+    content.className = "content";
+
+    const name = document.createElement("h3");
+    name.textContent = item.name;
+
+    const button = document.createElement("button");
+    button.className = "btn";
+    button.textContent = "استفسر عن القطعة";
+
+    button.addEventListener("click", () => {
+      const message = "مرحباً، أريد الاستفسار عن القطعة: " +
+        item.name + "\nيرجى إعلامي بالسعر والتوفر.";
+
+      window.open(
+        "https://wa.me/9647504172468?text=" +
+          encodeURIComponent(message),
+        "_blank",
+        "noopener,noreferrer"
+      );
+    });
+
+    content.append(name, button);
+    card.appendChild(content);
+    catalogResults.appendChild(card);
+  });
+
+  catalogCount.textContent = "عدد النتائج: " + filtered.length;
+  catalogMore.hidden = filtered.length <= catalogVisible;
+}
+
+catalogSearch.addEventListener("input", () => {
+  catalogVisible = 20;
+  renderCatalog();
+});
+
+catalogMore.className = "btn";
+catalogMore.addEventListener("click", () => {
+  catalogVisible += 20;
+  renderCatalog();
+});
+
+fetch("./catalog_public_draft.json")
+  .then(response => {
+    if (!response.ok) throw new Error("تعذر تحميل الكتالوج");
+    return response.json();
+  })
+  .then(data => {
+    if (!Array.isArray(data)) throw new Error("تنسيق غير صحيح");
+
+    catalogItems = data
+      .filter(item => item && typeof item.name === "string")
+      .map(item => ({ name: item.name.trim() }))
+      .filter(item => item.name);
+
+    renderCatalog();
+  })
+  .catch(error => {
+    catalogCount.textContent = "تعذر تحميل المنتجات حالياً.";
+    console.error(error);
+  });
+
+</script>
 <section id="contact" class="contact"><div class="wrap"><div class="section-heading"><h2>تواصل مع المتجر</h2></div><div class="contact-card"><h3>جوتیارێن سێمێلێ</h3><p>دهوك – صناعة دهوك الجديدة (آلوكا)<br>Zone C / Block 7<br>الهاتف: <a href="tel:+9647504172468" dir="ltr">07504172468</a></p><a class="btn" href="https://wa.me/9647504172468" target="_blank" rel="noopener noreferrer">واتساب المتجر</a></div></div></section>
 </main><footer><strong>جوتیارێن سێمێلێ</strong><div>متخصصون في قطع غيار New Holland</div><div>نخدم الزبائن في جميع محافظات العراق</div></footer>
 <script>
