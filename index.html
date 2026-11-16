@@ -16,6 +16,15 @@ section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.se
 .search-box{background:white;border-radius:20px;padding:28px;box-shadow:0 10px 30px #103c6510;max-width:920px;margin:auto}.fields{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:8px}.field label{font-weight:bold;color:var(--navy)}select,input{width:100%;border:1px solid #cbd8e8;border-radius:10px;padding:14px;background:white;color:var(--ink)}.field.full{grid-column:1/-1}.actions{text-align:center;margin-top:20px}.notice{background:#fff7db;border-radius:12px;padding:17px 20px;line-height:1.9;margin-top:20px;font-size:14px}
 .contact{background:#eaf1fa}.contact-card{text-align:center;background:white;padding:32px;border-radius:20px;max-width:750px;margin:auto}.contact-card p{line-height:2}footer{background:#071e3b;color:white;text-align:center;padding:35px 15px;line-height:2}footer strong{font-size:20px}
 @media(max-width:800px){.hero-inner{grid-template-columns:1fr;padding:45px 0}.hero-img{height:250px}.part-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.head{justify-content:center;text-align:center}nav{justify-content:center}}@media(max-width:600px){.grid,.part-grid,.fields{grid-template-columns:1fr}.hero-inner{gap:15px}.hero h1{font-size:28px}.hero-img{height:220px}.card img{height:220px}.search-box{padding:18px}.top .wrap{justify-content:center;text-align:center}section{padding:45px 0}}
+
+/* بطاقات كتالوج مدمجة دون صور غير موثقة */
+#catalogResults{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+#catalogResults .catalog-card{margin:0!important;display:flex;min-width:0;border-radius:15px;box-shadow:0 4px 16px #103c650d}
+#catalogResults .catalog-card .content{padding:18px;display:flex;flex-direction:column;gap:16px;width:100%;justify-content:space-between}
+#catalogResults .catalog-card h3{font-size:17px;line-height:1.65;margin:0;overflow-wrap:anywhere}
+#catalogResults .catalog-card .btn{width:100%;padding:11px 10px;min-height:44px;font-size:14px}
+@media(max-width:800px){#catalogResults{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){#catalogResults{grid-template-columns:1fr;gap:10px}#catalogResults .catalog-card .content{padding:14px 16px;gap:10px}#catalogResults .catalog-card h3{font-size:16px}}
 </style>
 </head>
 <body>
@@ -72,8 +81,8 @@ function renderCatalog() {
 
   filtered.slice(0, catalogVisible).forEach(item => {
     const card = document.createElement("div");
-    card.className = "card";
-    card.style.marginBottom = "12px";
+    card.className = "card catalog-card";
+
 
     const content = document.createElement("div");
     content.className = "content";
@@ -138,6 +147,7 @@ fetch("./catalog_public_draft.json")
   });
 
 </script>
+</section>
 <section id="contact" class="contact"><div class="wrap"><div class="section-heading"><h2>تواصل مع المتجر</h2></div><div class="contact-card"><h3>جوتیارێن سێمێلێ</h3><p>دهوك – صناعة دهوك الجديدة (آلوكا)<br>Zone C / Block 7<br>الهاتف: <a href="tel:+9647504172468" dir="ltr">07504172468</a></p><a class="btn" href="https://wa.me/9647504172468" target="_blank" rel="noopener noreferrer">واتساب المتجر</a></div></div></section>
 </main><footer><strong>جوتیارێن سێمێلێ</strong><div>متخصصون في قطع غيار New Holland</div><div>نخدم الزبائن في جميع محافظات العراق</div></footer>
 <script>
