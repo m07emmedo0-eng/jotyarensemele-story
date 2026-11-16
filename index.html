@@ -25,6 +25,11 @@ section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.se
 #catalogResults .catalog-card .btn{width:100%;padding:11px 10px;min-height:44px;font-size:14px}
 @media(max-width:800px){#catalogResults{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){#catalogResults{grid-template-columns:1fr;gap:10px}#catalogResults .catalog-card .content{padding:14px 16px;gap:10px}#catalogResults .catalog-card h3{font-size:16px}}
+/* مرشحات الكتالوج */
+.catalog-filters{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px auto 12px;max-width:1000px}
+.catalog-filters label{display:block;font-weight:bold;color:var(--navy);margin-bottom:8px}
+.catalog-hint{color:var(--muted);font-size:13px;line-height:1.8;margin:8px 0 16px}
+@media(max-width:600px){.catalog-filters{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -44,13 +49,18 @@ section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.se
     ابحث عن القطعة المطلوبة وأرسل استفسارك إلى المتجر
   </p>
 
-  <div style="max-width:900px;margin:25px auto">
-    <input
-      id="catalogSearch"
-      type="search"
-      placeholder="ابحث باسم القطعة..."
-      style="width:100%;padding:16px;border:1px solid #ccc;border-radius:12px"
-    >
+  <div style="max-width:1100px;margin:25px auto">
+    <div class="catalog-filters">
+      <div><label for="catalogModel">موديل الآلة</label>
+        <select id="catalogModel"><option value="">جميع الموديلات</option>
+          <optgroup label="الجرارات"><option>TM140</option><option>TM155</option><option>TM</option><option>T7030</option><option>T7040</option><option>T7000</option><option>T7.210</option><option>T7.260</option><option>T7</option><option>T6070</option><option>T6080</option><option>T6</option><option>TD5.00</option><option>TD</option></optgroup>
+          <optgroup label="الحاصدات"><option>TC54</option><option>TC56</option><option>TC5070</option><option>TC5000</option><option>TC5.00</option><option>TC</option></optgroup>
+        </select>
+      </div>
+      <div><label for="catalogSearch">اسم القطعة</label>
+        <input id="catalogSearch" type="search" placeholder="ابحث باسم القطعة..."></div>
+    </div>
+    <p class="catalog-hint">التصفية حسب الموديل تعتمد على الموديل المكتوب في اسم المنتج فقط، ولا تثبت التوافق الفني. إذا لم تجد القطعة، اختر «جميع الموديلات» أو أرسل استفساراً للمتجر.</p>
     <p id="catalogCount" aria-live="polite"></p>
     <div id="catalogResults"></div>
     <div style="text-align:center;margin-top:20px">
@@ -66,6 +76,7 @@ let catalogItems = [];
 let catalogVisible = 20;
 
 const catalogSearch = document.getElementById("catalogSearch");
+const catalogModel = document.getElementById("catalogModel");
 const catalogResults = document.getElementById("catalogResults");
 const catalogCount = document.getElementById("catalogCount");
 const catalogMore = document.getElementById("catalogMore");
@@ -73,9 +84,16 @@ const catalogMore = document.getElementById("catalogMore");
 function renderCatalog() {
   const query = catalogSearch.value.trim().toLowerCase();
 
-  const filtered = catalogItems.filter(item =>
-    item.name.toLowerCase().includes(query)
-  );
+  const selectedModel = catalogModel.value;
+  const normalizeModel = value => value.toUpperCase().replace(/[.\s_-]/g, "");
+  const modelToken = normalizeModel(selectedModel);
+  const filtered = catalogItems.filter(item => {
+    if (!item.name.toLowerCase().includes(query)) return false;
+    if (!selectedModel) return true;
+    // Only explicit model mentions in the public name; no inferred compatibility.
+    const tokens = item.name.toUpperCase().match(/[A-Z]+[0-9]+(?:[.][0-9]+)*/g) || [];
+    return tokens.some(token => normalizeModel(token) === modelToken);
+  });
 
   catalogResults.replaceChildren();
 
@@ -111,9 +129,11 @@ function renderCatalog() {
     catalogResults.appendChild(card);
   });
 
-  catalogCount.textContent = "عدد النتائج: " + filtered.length;
+  catalogCount.textContent = "عدد النتائج: " + filtered.length + (selectedModel ? " (الموديل مذكور بالاسم فقط)" : "");
   catalogMore.hidden = filtered.length <= catalogVisible;
 }
+
+catalogModel.addEventListener("change", () => { catalogVisible = 20; renderCatalog(); });
 
 catalogSearch.addEventListener("input", () => {
   catalogVisible = 20;
