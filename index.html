@@ -1,175 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="جوتیارێن سێمێلێ في دهوك، قطع غيار جرارات وحاصدات New Holland، واستفسارات القطع عبر واتساب.">
 <title>جوتیارێن سێمێلێ | قطع غيار New Holland</title>
 <style>
-:root{--blue:#083b78;--gold:#ffc324;--light:#f3f6fb}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--light);color:#152c49}
-header{background:var(--blue);color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-header h1{margin:0;font-size:27px}
-header small{display:block;margin-top:8px}
-nav{background:white;padding:19px 6%;display:flex;gap:25px;flex-wrap:wrap}
-nav a{color:var(--blue);text-decoration:none;font-weight:bold}
-.hero{background:linear-gradient(120deg,#062b59,#1260a5);color:white;text-align:center;padding:75px 20px}
-.hero h2{font-size:clamp(26px,3.5vw,42px);margin:0 0 22px;color:#ffffff}.hero p{font-size:19px;line-height:1.9}
-.btn{display:inline-block;background:var(--gold);color:#10294b;padding:14px 25px;border:0;border-radius:12px;text-decoration:none;font-weight:bold;cursor:pointer;font-size:16px}
-section{padding:48px 6%}
-h2{text-align:center;font-size:30px;color:var(--blue)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
-.card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px #092d5314}
-.card img{width:100%;height:230px;object-fit:cover;background:#e4ebf4}
-.card .content{padding:23px}
-.card h3{color:var(--blue);margin-top:0}
-.card p{line-height:1.8}
-input,select{padding:15px;border:1px solid #c8d5e4;border-radius:10px;font-size:16px;width:100%;background:white}
-.search{max-width:850px;margin:25px auto;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tags{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
-.tag{background:#e7eff9;color:#083b78;border-radius:30px;padding:9px 14px}
-.notice{background:#fff8df;padding:20px;border-radius:14px;line-height:1.9}
-footer{background:#092c56;color:white;padding:35px 6%;text-align:center;line-height:2}
-footer a{color:#ffc324}
-.hidden{display:none}
-@media(max-width:650px){.search{grid-template-columns:1fr}header{justify-content:center;text-align:center}section{padding:32px 5%}}
+:root{--navy:#092c56;--blue:#07529b;--gold:#ffca28;--paper:#f4f7fb;--ink:#172c47;--muted:#65758a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Tahoma,Arial,sans-serif}a{text-decoration:none}button,input,select{font:inherit}button{cursor:pointer} .wrap{width:min(1180px,92%);margin:auto}
+.top{background:#071e3b;color:#eaf4ff;padding:9px 0;font-size:13px}.top .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header{background:white;box-shadow:0 2px 14px #001c4014;position:sticky;top:0;z-index:10}.head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 0;flex-wrap:wrap}.brand{color:var(--navy);font-weight:900;font-size:clamp(20px,2.4vw,28px)}.brand small{display:block;font-size:12px;color:var(--muted);font-weight:normal;margin-top:5px}nav{display:flex;gap:20px;flex-wrap:wrap}nav a{color:var(--navy);font-size:14px;font-weight:bold}nav a:hover{color:var(--blue)}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--gold);border:0;border-radius:12px;padding:14px 22px;color:#112b4b;font-weight:bold;min-height:46px}.btn.secondary{background:white;color:var(--navy)}.btn.blue{background:var(--blue);color:white}.btn:hover{filter:brightness(.96)}
+.hero{background:linear-gradient(110deg,#061f40,#07549c);color:white;overflow:hidden}.hero-inner{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:30px;min-height:410px;padding:55px 0}.eyebrow{color:#ffe184;font-weight:bold}.hero h1{font-size:clamp(28px,3.2vw,48px);line-height:1.45;margin:14px 0}.hero p{font-size:17px;line-height:2;color:#e4eefb}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.hero-img{width:100%;height:320px;object-fit:contain;object-position:center;border-radius:18px;background:#ffffff12}
+section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.section-heading h2{font-size:clamp(23px,2.5vw,33px);color:var(--navy);margin:0 0 12px}.section-heading p{color:var(--muted);line-height:1.8;margin:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.card{background:white;border:1px solid #e6edf5;border-radius:20px;overflow:hidden;box-shadow:0 10px 30px #103c6510}.card img{width:100%;height:260px;object-fit:contain;background:#f7f9fc;display:block}.content{padding:24px}.content h3{color:var(--navy);margin:0 0 12px;font-size:22px}.content p{line-height:1.9;color:var(--muted)}.tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.tag{padding:8px 12px;background:#eaf2fb;color:var(--navy);border-radius:30px;font-size:13px;font-weight:bold}
+.parts{background:white}.part-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.part{background:var(--paper);border:1px solid #e3ebf5;border-radius:16px;padding:24px}.part h3{color:var(--navy);margin:0 0 9px}.part p{color:var(--muted);line-height:1.8;min-height:56px}.part button{border:0;background:none;color:var(--blue);font-weight:bold;padding:0}
+.search-box{background:white;border-radius:20px;padding:28px;box-shadow:0 10px 30px #103c6510;max-width:920px;margin:auto}.fields{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:8px}.field label{font-weight:bold;color:var(--navy)}select,input{width:100%;border:1px solid #cbd8e8;border-radius:10px;padding:14px;background:white;color:var(--ink)}.field.full{grid-column:1/-1}.actions{text-align:center;margin-top:20px}.notice{background:#fff7db;border-radius:12px;padding:17px 20px;line-height:1.9;margin-top:20px;font-size:14px}
+.contact{background:#eaf1fa}.contact-card{text-align:center;background:white;padding:32px;border-radius:20px;max-width:750px;margin:auto}.contact-card p{line-height:2}footer{background:#071e3b;color:white;text-align:center;padding:35px 15px;line-height:2}footer strong{font-size:20px}
+@media(max-width:800px){.hero-inner{grid-template-columns:1fr;padding:45px 0}.hero-img{height:250px}.part-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.head{justify-content:center;text-align:center}nav{justify-content:center}}@media(max-width:600px){.grid,.part-grid,.fields{grid-template-columns:1fr}.hero-inner{gap:15px}.hero h1{font-size:28px}.hero-img{height:220px}.card img{height:220px}.search-box{padding:18px}.top .wrap{justify-content:center;text-align:center}section{padding:45px 0}}
 </style>
 </head>
 <body>
-<header id="home">
-<div>
-<h1>جوتیارێن سێمێلێ</h1>
-<small>قطع غيار جرارات وحاصدات New Holland</small>
-</div>
-<div>دهوك – صناعة دهوك الجديدة (آلوكا)<br>Zone C / Block 7</div>
-</header>
-
-<nav>
-<a href="#home">الرئيسية</a>
-<a href="#machines">الآلات</a>
-<a href="#parts">أقسام القطع</a>
-<a href="#products">البحث</a>
-<a href="#contact">اتصل بنا</a>
-</nav>
-
-<div class="hero">
-<h2>القطعة المناسبة لآلتك من مكان واحد</h2>
-<p>متخصصون في قطع غيار جرارات وحاصدات New Holland<br>مع التركيز على قطع CNH الأصلية</p>
-<a class="btn" href="#machines">استكشف الآلات</a>
-</div>
-
-<section id="machines">
-<h2>اختر نوع الآلة</h2>
-<div class="grid">
-<div class="card">
-<img src="agriculture-tractors-t-7-245.webp" alt="جرار New Holland T7" loading="lazy">
-<div class="content">
-  <h3>قطع غيار الجرارات</h3>
-<p>TM – T7000 – T7 – TD – TD5 – T6</p>
-<div class="tags">
-<span class="tag">TM140</span><span class="tag">TM155</span>
-<span class="tag">T7030</span><span class="tag">T7040</span>
-<span class="tag">T7.210</span><span class="tag">T7.260</span>
-<span class="tag">T6070</span><span class="tag">T6080</span>
-</div>
-<a class="btn" href="#products">ابحث عن القطع</a>
-</div>
-</div>
-<div class="card">
-<img src="combine-harvester-tc590-st5-new-holland(4).webp" alt="حاصدة New Holland" loading="lazy">
-<div class="content">
-  <h3>قطع غيار الحاصدات</h3>
-  <p>TC54 - TC56 - TC5070 - TC5000 Series - TC5.00 Series</p>
-  <div class="tags">
-<span class="tag">المحرك</span>
-<span class="tag">الحصاد</span>
-<span class="tag">ناقل الحركة</span>
-</div>
-<a class="btn" href="#products">ابحث عن القطع</a>
-</div>
-</div>
-</div>
-</section>
-
-<section id="parts">
-<h2>أقسام قطع الغيار</h2>
-<div class="grid" id="partsGrid"></div>
-</section>
-
-<section id="products">
-<h2>ابحث عن القطعة المناسبة</h2>
-<p style="text-align:center">اختر الموديل واكتب اسم القطعة التي تحتاجها</p>
-<div class="search">
-<select id="model">
-<option value="">اختر موديل الآلة</option>
-<optgroup label="الجرارات">
-<option>TM140</option><option>TM155</option>
-<option>T7030</option><option>T7040</option>
-<option>T7.210</option><option>T7.260</option>
-<option>T6070</option><option>T6080</option>
-<option>TD</option><option>TD5</option><option>T6</option>
-</optgroup>
-<optgroup label="الحاصدات">
-<option>TC54</option><option>TC56</option>
-<option>TC5070</option><option>TC5000</option>
-<option>TC5</option>
-</optgroup>
-</select>
-<input id="partName" placeholder="اسم القطعة المطلوبة">
-</div>
-<div style="text-align:center">
-<button class="btn" onclick="requestPart()">إرسال استفسار عن القطعة</button>
-</div>
-<p class="notice" style="max-width:850px;margin:30px auto">
-لا تظهر الأسعار أو حالة التوفر تلقائياً. يقوم فريق المتجر بمراجعة كل استفسار وتحديد السعر والتوفر قبل إتمام الطلب.
-</p>
-</section>
-
-<section id="contact">
-<h2>تواصل مع المتجر</h2>
-<div class="card" style="max-width:700px;margin:auto">
-<div class="content" style="text-align:center">
-<h3>جوتیارێن سێمێلێ</h3>
-<p>دهوك – صناعة دهوك الجديدة (آلوكا)<br>Zone C / Block 7</p>
-<p>الهاتف: 07504172468</p>
-<a class="btn" href="https://wa.me/9647504172468" target="_blank" rel="noopener noreferrer">واتساب المتجر</a>
-</div>
-</div>
-</section>
-
-<footer>
-<strong>جوتیارێن سێمێلێ</strong>
-<div>متخصصون في قطع غيار New Holland</div>
-<div>نخدم الزبائن في جميع محافظات العراق</div>
-</footer>
-
+<div class="top"><div class="wrap"><span>دهوك – صناعة دهوك الجديدة (آلوكا) | Zone C / Block 7</span><span>نخدم الزبائن في جميع محافظات العراق</span></div></div>
+<header id="home"><div class="wrap head"><a class="brand" href="#home">جوتیارێن سێمێلێ<small>قطع غيار جرارات وحاصدات New Holland</small></a><nav aria-label="القائمة الرئيسية"><a href="#home">الرئيسية</a><a href="#machines">الآلات</a><a href="#parts">أقسام القطع</a><a href="#products">طلب قطعة</a><a href="#contact">اتصل بنا</a></nav></div></header>
+<main>
+<div class="hero"><div class="wrap hero-inner"><div><div class="eyebrow">متخصصون في قطع غيار New Holland</div><h1>القطعة المناسبة لآلتك من مكان واحد</h1><p>قطع غيار جرارات وحاصدات New Holland مع التركيز على قطع CNH الأصلية. اختر موديل آلتك وأرسل استفسارك بسهولة.</p><div class="hero-actions"><a class="btn" href="#machines">استكشف الآلات</a><a class="btn secondary" href="#products">اطلب عرض سعر</a></div></div><img class="hero-img" src="agriculture-tractors-t-7-245.webp" alt="جرار New Holland T7"></div></div>
+<section id="machines"><div class="wrap"><div class="section-heading"><h2>اختر نوع الآلة</h2><p>تصفح الموديلات التي نخدمها وأرسل طلب القطعة المطلوبة</p></div><div class="grid"><article class="card"><img src="agriculture-tractors-t-7-245.webp" alt="جرار New Holland T7" loading="lazy"><div class="content"><h3>قطع غيار الجرارات</h3><p>سلاسل TM وT7000 وT7 وT6 وTD وTD5.00</p><div class="tags"><span class="tag">TM140</span><span class="tag">TM155</span><span class="tag">T7030</span><span class="tag">T7040</span><span class="tag">T7.210</span><span class="tag">T7.260</span><span class="tag">T6070</span><span class="tag">T6080</span></div><a class="btn blue" href="#products">استفسر عن قطع الجرار</a></div></article><article class="card"><img src="combine-harvester-tc590-st5-new-holland(4).webp" alt="حاصدة New Holland" loading="lazy"><div class="content"><h3>قطع غيار الحاصدات</h3><p>سلاسل TC54 وTC56 وTC5000 وTC5.00</p><div class="tags"><span class="tag">TC54</span><span class="tag">TC56</span><span class="tag">TC5070</span><span class="tag">TC5000</span><span class="tag">TC5.00</span></div><a class="btn blue" href="#products">استفسر عن قطع الحاصدة</a></div></article></div></div></section>
+<section id="parts" class="parts"><div class="wrap"><div class="section-heading"><h2>أقسام قطع الغيار</h2><p>اختر القسم للانتقال مباشرة إلى نموذج الاستفسار</p></div><div class="part-grid" id="partsGrid"></div></div></section>
+<section id="products"><div class="wrap"><div class="section-heading"><h2>ابحث عن القطعة المناسبة</h2><p>حدد موديل الآلة ونوع القطعة، ثم أرسل طلبك إلى واتساب المتجر</p></div><form class="search-box" id="requestForm"><div class="fields"><div class="field"><label for="model">موديل الآلة</label><select id="model" required><option value="">اختر موديل الآلة</option><optgroup label="الجرارات"><option>TM140</option><option>TM155</option><option>T7030</option><option>T7040</option><option>T7.210</option><option>T7.260</option><option>T6070</option><option>T6080</option><option>TD</option><option>TD5.00</option><option>T6</option><option>موديل جرار آخر</option></optgroup><optgroup label="الحاصدات"><option>TC54</option><option>TC56</option><option>TC5070</option><option>TC5000</option><option>TC5.00</option><option>موديل حاصدة آخر</option></optgroup></select></div><div class="field"><label for="category">نوع القطعة</label><select id="category" required><option value="">اختر القسم</option><option>قطع المحركات</option><option>ناقل الحركة والقابض</option><option>المحاور</option><option>الهيدروليك</option><option>الكهرباء والحساسات</option><option>قطع الحصاد والدراس</option><option>أخرى</option></select></div><div class="field full"><label for="partName">اسم القطعة المطلوبة</label><input id="partName" required maxlength="160" placeholder="مثال: فلتر زيت المحرك"></div></div><div class="actions"><button class="btn" type="submit">إرسال الاستفسار عبر واتساب</button></div><div class="notice">الأسعار والتوفر غير معروضين على الموقع. يراجع المتجر الاستفسار أولاً ويحدد السعر والتوفر قبل متابعة الطلب. لا يتم الدفع عبر هذه الصفحة.</div></form></div></section>
+<section id="contact" class="contact"><div class="wrap"><div class="section-heading"><h2>تواصل مع المتجر</h2></div><div class="contact-card"><h3>جوتیارێن سێمێلێ</h3><p>دهوك – صناعة دهوك الجديدة (آلوكا)<br>Zone C / Block 7<br>الهاتف: <a href="tel:+9647504172468" dir="ltr">07504172468</a></p><a class="btn" href="https://wa.me/9647504172468" target="_blank" rel="noopener noreferrer">واتساب المتجر</a></div></div></section>
+</main><footer><strong>جوتیارێن سێمێلێ</strong><div>متخصصون في قطع غيار New Holland</div><div>نخدم الزبائن في جميع محافظات العراق</div></footer>
 <script>
-const categories=[
-["قطع المحركات","المكابس، الحشوات، الفلاتر وأجزاء المحرك"],
-["ناقل الحركة","أجزاء الجيربوكس والقابض"],
-["المحاور","المحاور الأمامية والخلفية وأجزاؤها"],
-["الهيدروليك","المضخات والصمامات والوصلات"],
-["الكهرباء والحساسات","الحساسات والأجزاء الكهربائية"],
-["قطع الحصاد","أجزاء أنظمة الحصاد والدراس"]
-];
-document.getElementById("partsGrid").innerHTML=categories.map(c=>
-`<div class="card"><div class="content"><h3>${c[0]}</h3><p>${c[1]}</p><button class="btn" onclick="choosePart(this)" data-part="${c[0]}">استفسر الآن</button></div></div>`
-).join("");
-function sendWhatsApp(message){
-window.open("https://wa.me/9647504172468?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
-}
-function requestPart(){
-const model=document.getElementById("model").value;
-const part=document.getElementById("partName").value.trim();
-if(!model||!part){alert("يرجى اختيار الموديل وكتابة اسم القطعة");return;}
-sendWhatsApp("مرحباً، أريد الاستفسار عن قطعة غيار New Holland.\nالموديل: "+model+"\nالقطعة: "+part+"\nيرجى إعلامي بالسعر والتوفر.");
-}
-function choosePart(button){
-document.getElementById("partName").value=button.dataset.part;
-document.getElementById("products").scrollIntoView({behavior:"smooth"});
-}
-</script>
-</body>
-</html>
+const categories=[['قطع المحركات','المكابس والحشوات والفلاتر وأجزاء المحرك'],['ناقل الحركة والقابض','أجزاء الجيربوكس والقابض'],['المحاور','المحاور الأمامية والخلفية وأجزاؤها'],['الهيدروليك','المضخات والصمامات والوصلات'],['الكهرباء والحساسات','الحساسات والأجزاء الكهربائية'],['قطع الحصاد والدراس','أجزاء أنظمة الحصاد والدراس']];
+const grid=document.getElementById('partsGrid');categories.forEach(([name,description])=>{const article=document.createElement('article');article.className='part';const h=document.createElement('h3');h.textContent=name;const p=document.createElement('p');p.textContent=description;const b=document.createElement('button');b.type='button';b.textContent='استفسر عن هذا القسم ←';b.addEventListener('click',()=>{document.getElementById('category').value=name;document.getElementById('products').scrollIntoView({behavior:'smooth'});document.getElementById('model').focus({preventScroll:true})});article.append(h,p,b);grid.append(article)});
+document.getElementById('requestForm').addEventListener('submit',e=>{e.preventDefault();const model=document.getElementById('model').value;const category=document.getElementById('category').value;const part=document.getElementById('partName').value.trim();if(!model||!category||!part){alert('يرجى إكمال بيانات القطعة');return}const message=`مرحباً، أريد الاستفسار عن قطعة غيار New Holland.\nالموديل: ${model}\nالقسم: ${category}\nالقطعة: ${part}\nيرجى إعلامي بالسعر والتوفر.`;window.open('https://wa.me/9647504172468?text='+encodeURIComponent(message),'_blank','noopener,noreferrer')});
+</script></body></html>
