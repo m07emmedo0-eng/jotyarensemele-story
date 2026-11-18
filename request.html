@@ -44,8 +44,9 @@ footer{text-align:center;padding:25px}
 <h2>تسجيل دخول الزبون</h2>
 <p>سجل الدخول لإرسال طلبك ومرفقاته بصورة خاصة.</p>
 
-<label for="email">البريد الإلكتروني</label>
-<input id="email" type="email" autocomplete="email">
+<label for="loginPhone">رقم الهاتف</label>
+<input id="loginPhone" type="tel" autocomplete="username" dir="ltr" placeholder="07XXXXXXXXX" maxlength="25">
+<small>رقم الهاتف غير موثق برسالة SMS. استخدم رقمك الحقيقي.</small>
 
 <label for="password">كلمة المرور</label>
 <input id="password" type="password" autocomplete="current-password">
@@ -53,6 +54,8 @@ footer{text-align:center;padding:25px}
 <button id="login">تسجيل الدخول</button>
 <button id="signup" class="secondary">إنشاء حساب جديد</button>
 
+<p><a href="https://wa.me/9647504172468" target="_blank" rel="noopener noreferrer">نسيت كلمة المرور؟ تواصل مع المتجر عبر واتساب</a></p>
+<small>لا ترسل كلمة المرور. استعادة الحساب تتطلب إثبات ملكيته، ولا يكفي رقم الهاتف وحده.</small>
 <div id="authMessage" class="message" role="status"></div>
 </section>
 
@@ -198,40 +201,40 @@ el("machineType").addEventListener("change",()=>{
   }
 });
 
+function normalizePhone(value){
+  let n = value.trim().replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-1632)).replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-1776)).replace(/[\s()-]/g,"");
+  if(n.startsWith("00964")) n = "+" + n.slice(2);
+  if(n.startsWith("964")) n = "+" + n;
+  if(n.startsWith("07")) n = "+964" + n.slice(1);
+  if(!/^\+9647[0-9]{9}$/.test(n)) return null;
+  return n;
+}
+
 async function authenticate(create){
-  const email = el("email").value.trim();
+  const phone = normalizePhone(el("loginPhone").value);
   const password = el("password").value;
   const message = el("authMessage");
-
-  if(!email || !password){
-    message.textContent = "يرجى إدخال البريد الإلكتروني وكلمة المرور.";
+  if(!phone || !password){
+    message.textContent = "يرجى إدخال رقم هاتف عراقي صحيح وكلمة المرور.";
     return;
   }
-
+  if(create && password.length < 10){
+    message.textContent = "اختر كلمة مرور لا تقل عن 10 أحرف أو رموز.";
+    return;
+  }
   el("login").disabled = true;
   el("signup").disabled = true;
-
   try{
     const result = create
-      ? await db.auth.signUp({
-          email,
-          password,
-          options:{
-            emailRedirectTo:location.origin + location.pathname
-          }
-        })
-      : await db.auth.signInWithPassword({email,password});
-
+      ? await db.auth.signUp({phone,password})
+      : await db.auth.signInWithPassword({phone,password});
     if(result.error) throw result.error;
-
     message.textContent = result.data.session
       ? "تم تسجيل الدخول بنجاح."
-      : "راجع بريدك الإلكتروني لتأكيد الحساب ثم سجل الدخول.";
-
+      : "لم يبدأ تسجيل الدخول. تواصل مع المتجر للتحقق من إعدادات الحساب.";
     el("password").value = "";
-
   }catch(error){
-    message.textContent = "تعذر إكمال العملية: " + error.message;
+    message.textContent = "تعذر إكمال العملية. تحقق من البيانات أو تواصل مع المتجر.";
   }finally{
     el("login").disabled = false;
     el("signup").disabled = false;
