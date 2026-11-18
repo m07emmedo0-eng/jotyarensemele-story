@@ -363,7 +363,7 @@ el("requestForm").addEventListener("submit",async event=>{
     };
 
     if(!payload.customer_name || !payload.phone ||
-       !payload.machine_model || !payload.serial_number ||
+    !payload.machine_model ||
        !payload.notes){
       throw new Error("يرجى إكمال جميع المعلومات المطلوبة.");
     }
