@@ -30,6 +30,7 @@ section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.se
 .catalog-filters label{display:block;font-weight:bold;color:var(--navy);margin-bottom:8px}
 .catalog-hint{color:var(--muted);font-size:13px;line-height:1.8;margin:8px 0 16px}
 @media(max-width:600px){.catalog-filters{grid-template-columns:1fr}}
+#catalogMore[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -85,14 +86,30 @@ function renderCatalog() {
   const query = catalogSearch.value.trim().toLowerCase();
 
   const selectedModel = catalogModel.value;
-  const normalizeModel = value => value.toUpperCase().replace(/[.\s_-]/g, "");
-  const modelToken = normalizeModel(selectedModel);
+  const modelToken = selectedModel.toUpperCase().replace(/[.\s_-]/g, "");
+  const families = {
+    TM: /^TM(?:\d{2,3})?$/,
+    T7000: /^T7\d{3}$/,
+    T7: /^T7(?:[.][0-9]{3})?$/,
+    T6: /^T6(?:\d{3})?$/,
+    TD: /^TD(?:\d{2,3})?$/,
+    TD500: /^TD5(?:\d{2,3})$/,
+    TC: /^TC(?:\d{2,4})?$/,
+    TC5000: /^TC5\d{3}$/,
+    TC500: /^TC5\d{2}$/
+  };
   const filtered = catalogItems.filter(item => {
     if (!item.name.toLowerCase().includes(query)) return false;
     if (!selectedModel) return true;
-    // Only explicit model mentions in the public name; no inferred compatibility.
-    const tokens = item.name.toUpperCase().match(/[A-Z]+[0-9]+(?:[.][0-9]+)*/g) || [];
-    return tokens.some(token => normalizeModel(token) === modelToken);
+    // Match model mentions, not verified compatibility.
+    const tokens = item.name.toUpperCase().match(/[A-Z]+(?:[ ._-]*[0-9]+(?:[.][0-9]+)*)?/g) || [];
+    return tokens.some(raw => {
+      const token = raw.replace(/[.\s_-]/g, "");
+      if (token === modelToken) return true;
+      if (modelToken === "T7") return /^T7\.\d{3}$/.test(raw.replace(/[\s_-]/g, ""));
+      if (modelToken === "T7000" && raw.includes(".")) return false;
+      return Boolean(families[modelToken] && families[modelToken].test(token));
+    });
   });
 
   catalogResults.replaceChildren();
@@ -131,6 +148,12 @@ function renderCatalog() {
 
   catalogCount.textContent = "عدد النتائج: " + filtered.length + (selectedModel ? " (الموديل مذكور بالاسم فقط)" : "");
   catalogMore.hidden = filtered.length <= catalogVisible;
+  if (!filtered.length) {
+    const empty = document.createElement("p");
+    empty.style.gridColumn = "1 / -1";
+    empty.textContent = "لم نجد قطعاً مطابقة. جرّب جميع الموديلات أو أرسل استفساراً للمتجر.";
+    catalogResults.appendChild(empty);
+  }
 }
 
 catalogModel.addEventListener("change", () => { catalogVisible = 20; renderCatalog(); });
