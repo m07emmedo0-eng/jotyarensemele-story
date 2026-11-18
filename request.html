@@ -20,7 +20,7 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #ccd5df;border-ra
 textarea{min-height:120px;resize:vertical}
 button{width:100%;padding:15px;background:#ffca28;color:#092c56;border:0;border-radius:10px;font:inherit;font-weight:bold;cursor:pointer;margin-top:18px}
 button:disabled{opacity:.5;cursor:wait}
-.secondary{background:#e8edf4}
+.phone-row{display:flex;gap:8px;direction:ltr}.phone-row select{width:42%;max-width:240px}.phone-row input{flex:1;min-width:0}.secondary{background:#e8edf4}
 small{display:block;color:#65758a;line-height:1.8;margin-top:7px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
 .message{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8;margin-top:15px}
@@ -45,8 +45,8 @@ footer{text-align:center;padding:25px}
 <p>سجل الدخول لإرسال طلبك ومرفقاته بصورة خاصة.</p>
 
 <label for="loginPhone">رقم الهاتف</label>
-<input id="loginPhone" type="tel" autocomplete="username" dir="ltr" placeholder="07XXXXXXXXX" maxlength="25">
-<small>رقم الهاتف غير موثق برسالة SMS. استخدم رقمك الحقيقي.</small>
+<div class="phone-row"><select id="countryCode" aria-label="مفتاح الدولة"><option value="IQ" selected>🇮🇶 العراق +964</option></select><input id="loginPhone" type="tel" autocomplete="username" dir="ltr" placeholder="750 XXX XXXX" maxlength="25"></div>
+<small>رقم الهاتف غير موثق برسالة SMS. استخدم رقمك الحقيقي. لغير العراق، أدخل الرقم بالصيغة الدولية كاملة أو الرقم الوطني دون بادئة الاتصال المحلية (إن وجدت).</small>
 
 <label for="password">كلمة المرور</label>
 <input id="password" type="password" autocomplete="current-password">
@@ -201,12 +201,30 @@ el("machineType").addEventListener("change",()=>{
   }
 });
 
-function normalizePhone(value){
-  let n = value.trim().replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-1632)).replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-1776)).replace(/[\s()-]/g,"");
-  if(n.startsWith("00964")) n = "+" + n.slice(2);
-  if(n.startsWith("964")) n = "+" + n;
-  if(n.startsWith("07")) n = "+964" + n.slice(1);
-  if(!/^\+9647[0-9]{9}$/.test(n)) return null;
+const countryCodes = {"US": "1", "CA": "1", "AG": "1", "AI": "1", "AS": "1", "BB": "1", "BM": "1", "BS": "1", "DM": "1", "DO": "1", "GD": "1", "GU": "1", "JM": "1", "KN": "1", "KY": "1", "LC": "1", "MP": "1", "MS": "1", "PR": "1", "SX": "1", "TC": "1", "TT": "1", "VC": "1", "VG": "1", "VI": "1", "RU": "7", "KZ": "7", "EG": "20", "ZA": "27", "GR": "30", "NL": "31", "BE": "32", "FR": "33", "ES": "34", "HU": "36", "IT": "39", "VA": "39", "RO": "40", "CH": "41", "AT": "43", "GB": "44", "GG": "44", "IM": "44", "JE": "44", "DK": "45", "SE": "46", "NO": "47", "SJ": "47", "PL": "48", "DE": "49", "PE": "51", "MX": "52", "CU": "53", "AR": "54", "BR": "55", "CL": "56", "CO": "57", "VE": "58", "MY": "60", "AU": "61", "CC": "61", "CX": "61", "ID": "62", "PH": "63", "NZ": "64", "PN": "64", "SG": "65", "TH": "66", "JP": "81", "KR": "82", "VN": "84", "CN": "86", "TR": "90", "IN": "91", "PK": "92", "AF": "93", "LK": "94", "MM": "95", "IR": "98", "SS": "211", "MA": "212", "EH": "212", "DZ": "213", "TN": "216", "LY": "218", "GM": "220", "SN": "221", "MR": "222", "ML": "223", "GN": "224", "CI": "225", "BF": "226", "NE": "227", "TG": "228", "BJ": "229", "MU": "230", "LR": "231", "SL": "232", "GH": "233", "NG": "234", "TD": "235", "CF": "236", "CM": "237", "CV": "238", "ST": "239", "GQ": "240", "GA": "241", "CG": "242", "CD": "243", "AO": "244", "GW": "245", "IO": "246", "AC": "247", "SC": "248", "SD": "249", "RW": "250", "ET": "251", "SO": "252", "DJ": "253", "KE": "254", "TZ": "255", "UG": "256", "BI": "257", "MZ": "258", "ZM": "260", "MG": "261", "RE": "262", "YT": "262", "ZW": "263", "NA": "264", "MW": "265", "LS": "266", "BW": "267", "SZ": "268", "KM": "269", "SH": "290", "TA": "290", "ER": "291", "AW": "297", "FO": "298", "GL": "299", "GI": "350", "PT": "351", "LU": "352", "IE": "353", "IS": "354", "AL": "355", "MT": "356", "CY": "357", "FI": "358", "AX": "358", "BG": "359", "LT": "370", "LV": "371", "EE": "372", "MD": "373", "AM": "374", "BY": "375", "AD": "376", "MC": "377", "SM": "378", "UA": "380", "RS": "381", "ME": "382", "XK": "383", "HR": "385", "SI": "386", "BA": "387", "MK": "389", "CZ": "420", "SK": "421", "LI": "423", "FK": "500", "BZ": "501", "GT": "502", "SV": "503", "HN": "504", "NI": "505", "CR": "506", "PA": "507", "PM": "508", "HT": "509", "GP": "590", "BL": "590", "MF": "590", "BO": "591", "GY": "592", "EC": "593", "GF": "594", "PY": "595", "MQ": "596", "SR": "597", "UY": "598", "CW": "599", "BQ": "599", "TL": "670", "NF": "672", "BN": "673", "NR": "674", "PG": "675", "TO": "676", "SB": "677", "VU": "678", "FJ": "679", "PW": "680", "WF": "681", "CK": "682", "NU": "683", "WS": "685", "KI": "686", "NC": "687", "TV": "688", "PF": "689", "TK": "690", "FM": "691", "MH": "692", "KP": "850", "HK": "852", "MO": "853", "KH": "855", "LA": "856", "BD": "880", "TW": "886", "MV": "960", "LB": "961", "JO": "962", "SY": "963", "IQ": "964", "KW": "965", "SA": "966", "YE": "967", "OM": "968", "PS": "970", "AE": "971", "IL": "972", "BH": "973", "QA": "974", "BT": "975", "MN": "976", "NP": "977", "TJ": "992", "TM": "993", "AZ": "994", "GE": "995", "KG": "996", "UZ": "998"};
+const countrySelect = el("countryCode");
+const names = new Intl.DisplayNames(["ar"], {type:"region"});
+const flag = iso => String.fromCodePoint(...Array.from(iso,c=>127397+c.charCodeAt(0)));
+countrySelect.replaceChildren();
+for(const iso of ["IQ",...Object.keys(countryCodes).filter(c=>c!=="IQ").sort((a,b)=>names.of(a).localeCompare(names.of(b),"ar"))]){
+  const option = new Option(flag(iso)+" "+names.of(iso)+" +"+countryCodes[iso],iso);
+  countrySelect.add(option);
+}
+countrySelect.value="IQ";
+countrySelect.onchange=()=>{el("loginPhone").placeholder=countrySelect.value==="IQ"?"750 XXX XXXX":"رقم الهاتف الوطني";};
+function normalizePhone(value, iso=countrySelect.value){
+  let n=value.trim().replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-1632)).replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-1776)).replace(/[\s().-]/g,"");
+  const code=countryCodes[iso];
+  if(!code) return null;
+  if(n.startsWith("00")) n="+"+n.slice(2);
+  if(iso==="IQ"){
+    if(/^9647[0-9]{9}$/.test(n)) n="+"+n;
+    if(!n.startsWith("+")) n="+964"+n.replace(/^0/,"");
+    return /^\+9647[0-9]{9}$/.test(n)?n:null;
+  }
+  // International numbers can be pasted in full; otherwise enter national significant number.
+  if(!n.startsWith("+")) n="+"+code+n;
+  if(!n.startsWith("+"+code) || !/^\+[1-9][0-9]{6,14}$/.test(n)) return null;
   return n;
 }
 
@@ -215,7 +233,7 @@ async function authenticate(create){
   const password = el("password").value;
   const message = el("authMessage");
   if(!phone || !password){
-    message.textContent = "يرجى إدخال رقم هاتف عراقي صحيح وكلمة المرور.";
+    message.textContent = "يرجى اختيار مفتاح الدولة وإدخال رقم الهاتف الصحيح وكلمة المرور.";
     return;
   }
   if(create && password.length < 10){
