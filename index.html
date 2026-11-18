@@ -31,11 +31,14 @@ section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.se
 .catalog-hint{color:var(--muted);font-size:13px;line-height:1.8;margin:8px 0 16px}
 @media(max-width:600px){.catalog-filters{grid-template-columns:1fr}}
 #catalogMore[hidden]{display:none!important}
+
+#orderCart{max-width:850px;margin:24px auto;padding:24px;background:white;border:1px solid #e3ebf5;border-radius:18px;scroll-margin-top:130px}
+#orderCart h3{color:var(--navy);margin-top:0}.cart-line{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid #e3ebf5}.cart-name{flex:1;min-width:150px}.cart-line input{width:90px;padding:8px}.cart-line button{padding:8px 12px;min-height:36px}.cart-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.cart-actions button:disabled{opacity:.45;cursor:not-allowed}.cart-add{background:white!important;border:1px solid #07529b!important;color:#07529b!important}#cartLink{white-space:nowrap}#cartStatus{color:var(--blue);min-height:1.5em}
 </style>
 </head>
 <body>
 <div class="top"><div class="wrap"><span>دهوك – صناعة دهوك الجديدة (آلوكا) | Zone C / Block 7</span><span>نخدم الزبائن في جميع محافظات العراق</span></div></div>
-<header id="home"><div class="wrap head"><a class="brand" href="#home">جوتیارێن سێمێلێ<small>قطع غيار جرارات وحاصدات New Holland</small></a><nav aria-label="القائمة الرئيسية"><a href="#home">الرئيسية</a><a href="#machines">الآلات</a><a href="#parts">أقسام القطع</a><a href="#products">طلب قطعة</a><a href="#contact">اتصل بنا</a></nav></div></header>
+<header id="home"><div class="wrap head"><a class="brand" href="#home">جوتیارێن سێمێلێ<small>قطع غيار جرارات وحاصدات New Holland</small></a><nav aria-label="القائمة الرئيسية"><a href="#home">الرئيسية</a><a href="#machines">الآلات</a><a href="#parts">أقسام القطع</a><a href="#products">طلب قطعة</a><a href="#contact">اتصل بنا</a><a id="cartLink" href="#orderCart">سلة الطلبات (0)</a></nav></div></header>
 <main>
 <div class="hero"><div class="wrap hero-inner"><div><div class="eyebrow">متخصصون في قطع غيار New Holland</div><h1>القطعة المناسبة لآلتك من مكان واحد</h1><p>قطع غيار جرارات وحاصدات New Holland مع التركيز على قطع CNH الأصلية. اختر موديل آلتك وأرسل استفسارك بسهولة.</p><div class="hero-actions"><a class="btn" href="#machines">استكشف الآلات</a><a class="btn secondary" href="#products">اطلب عرض سعر</a></div></div><img class="hero-img" src="675063.jpg" alt="جرار New Holland T7"></div></div>
 <section id="machines"><div class="wrap"><div class="section-heading"><h2>اختر نوع الآلة</h2><p>تصفح الموديلات التي نخدمها وأرسل طلب القطعة المطلوبة</p></div><div class="grid"><article class="card"><img src="675063.jpg" alt="جرار New Holland T7" loading="lazy"><div class="content"><h3>قطع غيار الجرارات</h3><p>سلاسل TM وT7000 وT7 وT6 وTD وTD5.00</p><div class="tags"><span class="tag">TM140</span><span class="tag">TM155</span><span class="tag">T7030</span><span class="tag">T7040</span><span class="tag">T7.210</span><span class="tag">T7.260</span><span class="tag">T6070</span><span class="tag">T6080</span></div><a class="btn blue" href="#products">استفسر عن قطع الجرار</a></div></article><article class="card"><img src="combine-harvester-tc590-st5-new-holland(4).webp" alt="حاصدة New Holland" loading="lazy"><div class="content"><h3>قطع غيار الحاصدات</h3><p>سلاسل TC54 وTC56 وTC5000 وTC5.00</p><div class="tags"><span class="tag">TC54</span><span class="tag">TC56</span><span class="tag">TC5070</span><span class="tag">TC5000</span><span class="tag">TC5.00</span></div><a class="btn blue" href="#products">استفسر عن قطع الحاصدة</a></div></article></div></div></section>
@@ -63,6 +66,7 @@ section{padding:65px 0}.section-heading{text-align:center;margin-bottom:28px}.se
     </div>
     <p class="catalog-hint">التصفية حسب الموديل تعتمد على الموديل المكتوب في اسم المنتج فقط، ولا تثبت التوافق الفني. إذا لم تجد القطعة، اختر «جميع الموديلات» أو أرسل استفساراً للمتجر.</p>
     <p id="catalogCount" aria-live="polite"></p>
+    <div id="orderCart" aria-labelledby="cartTitle"><h3 id="cartTitle">سلة الطلبات</h3><p>حدد الكميات وأرسل طلب عرض السعر. يتم تأكيد السعر والتوفر من المتجر.</p><div id="cartRows"></div><p id="cartStatus" role="status"></p><div class="cart-actions"><button class="btn" id="cartSend" type="button" disabled>إرسال طلب عرض السعر عبر واتساب</button><button class="btn secondary" id="cartClear" type="button" disabled>إفراغ السلة</button></div><p class="catalog-hint">السلة محفوظة على هذا المتصفح فقط. لا يمثل الطلب حجزاً للمخزون أو عملية دفع.</p></div>
     <div id="catalogResults"></div>
     <div style="text-align:center;margin-top:20px">
       <button id="catalogMore" type="button" hidden>
@@ -81,6 +85,64 @@ const catalogModel = document.getElementById("catalogModel");
 const catalogResults = document.getElementById("catalogResults");
 const catalogCount = document.getElementById("catalogCount");
 const catalogMore = document.getElementById("catalogMore");
+
+
+const cartKey = "jotyarensemele-cart-v1";
+let orderCart = new Map();
+try {
+  const saved = JSON.parse(localStorage.getItem(cartKey) || "[]");
+  if (Array.isArray(saved)) for (const entry of saved) {
+    if (Array.isArray(entry) && typeof entry[0] === "string" && Number.isInteger(entry[1]) && entry[1] >= 1 && entry[1] <= 999) orderCart.set(entry[0], entry[1]);
+  }
+} catch (_) {}
+const cartRows = document.getElementById("cartRows");
+const cartStatus = document.getElementById("cartStatus");
+const cartSend = document.getElementById("cartSend");
+const cartClear = document.getElementById("cartClear");
+function saveCart() {
+  try { localStorage.setItem(cartKey, JSON.stringify([...orderCart])); return true; }
+  catch (_) { return false; }
+}
+function updateCart(message = "") {
+  const saved = saveCart();
+  renderCart();
+  cartStatus.textContent = message + (saved ? "" : " تعذر حفظ السلة على هذا المتصفح.");
+}
+function addToCart(name) {
+  const quantity = orderCart.get(name) || 0;
+  if (quantity >= 999) { cartStatus.textContent = "الحد الأقصى للكمية 999."; return; }
+  orderCart.set(name, quantity + 1);
+  updateCart("تمت إضافة القطعة إلى السلة.");
+}
+function renderCart() {
+  cartRows.replaceChildren();
+  let total = 0;
+  for (const [name, quantity] of orderCart) {
+    total += quantity;
+    const row = document.createElement("div"); row.className = "cart-line";
+    const title = document.createElement("strong"); title.className = "cart-name"; title.textContent = name;
+    const label = document.createElement("label"); label.textContent = "الكمية ";
+    const input = document.createElement("input"); input.type = "number"; input.min = "1"; input.max = "999"; input.step = "1"; input.value = quantity; input.setAttribute("aria-label", "كمية " + name);
+    input.addEventListener("change", () => { const n = Number(input.value); orderCart.set(name, Number.isFinite(n) ? Math.max(1, Math.min(999, Math.trunc(n))) : quantity); updateCart(); });
+    label.append(input);
+    const remove = document.createElement("button"); remove.type = "button"; remove.className = "btn secondary"; remove.textContent = "حذف"; remove.setAttribute("aria-label", "حذف " + name);
+    remove.addEventListener("click", () => { orderCart.delete(name); updateCart(); });
+    row.append(title,label,remove); cartRows.append(row);
+  }
+  if (!orderCart.size) cartRows.textContent = "السلة فارغة. اختر القطع من الكتالوج.";
+  document.getElementById("cartLink").textContent = "سلة الطلبات (" + total + ")";
+  cartSend.disabled = cartClear.disabled = !orderCart.size;
+}
+cartClear.addEventListener("click", () => { if (confirm("هل تريد حذف جميع القطع من السلة؟")) { orderCart.clear(); updateCart(); } });
+cartSend.addEventListener("click", () => {
+  if (!orderCart.size) return;
+  const lines = [...orderCart].map(([name,qty],i) => `${i+1}. ${name} — الكمية: ${qty}`);
+  const message = "مرحباً، أريد عرض سعر للقطع التالية من New Holland:\n" + lines.join("\n") + "\nيرجى تأكيد السعر والتوفر.";
+  const url = "https://wa.me/9647504172468?text=" + encodeURIComponent(message);
+  if (url.length > 7500) { cartStatus.textContent = "الطلب طويل جداً. يرجى تقسيمه إلى طلبات أصغر."; return; }
+  window.open(url,"_blank","noopener,noreferrer");
+});
+renderCart();
 
 function renderCatalog() {
   const query = catalogSearch.value.trim().toLowerCase();
@@ -141,7 +203,10 @@ function renderCatalog() {
       );
     });
 
-    content.append(name, button);
+    const add = document.createElement("button");
+    add.type = "button"; add.className = "btn cart-add"; add.textContent = "أضف إلى الطلب";
+    add.addEventListener("click", () => { addToCart(item.name); add.textContent = "تمت الإضافة – أضف أخرى"; });
+    content.append(name, button, add);
     card.appendChild(content);
     catalogResults.appendChild(card);
   });
