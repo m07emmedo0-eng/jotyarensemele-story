@@ -147,6 +147,8 @@ footer{text-align:center;padding:25px}
 
 </section>
 
+<section class="card" id="ordersBox" hidden>
+<h2>طلباتي وعروض الأسعار</h2><button id="refreshOrders" class="secondary">تحديث الطلبات</button><p id="ordersMessage" role="status"></p><div id="ordersList"></div></section>
 </main>
 
 <footer>
@@ -170,6 +172,10 @@ function showSession(session){
   currentUser = session?.user || null;
   el("authBox").hidden = !!currentUser;
   el("requestBox").hidden = !currentUser;
+  el("ordersBox").hidden = !currentUser;
+  el("ordersList").replaceChildren();
+  el("ordersMessage").textContent = "";
+  if(currentUser) setTimeout(loadOrders,0);
 }
 
 db.auth.onAuthStateChange((event, session)=>{
@@ -386,6 +392,7 @@ el("requestForm").addEventListener("submit",async event=>{
       "رقم الطلب: " + requestId;
 
     el("requestForm").reset();
+    void loadOrders();
 
   }catch(error){
 
@@ -402,6 +409,50 @@ el("requestForm").addEventListener("submit",async event=>{
     el("logout").disabled = false;
   }
 });
+
+
+let orderGeneration = 0;
+const orderStates = {pending_review:'قيد المراجعة',quoted:'تم إعداد العرض',accepted:'تم قبول العرض',rejected:'تم رفض العرض',cancelled:'ملغى',completed:'مكتمل'};
+function addText(parent,tag,value){const e=document.createElement(tag);e.textContent=value;parent.append(e);return e;}
+const usd = n => Number(n).toFixed(2)+' USD';
+async function loadOrders(){
+ const token=++orderGeneration, user=currentUser?.id;
+ if(!user)return;
+ const valid=()=>token===orderGeneration && currentUser?.id===user;
+ const list=el('ordersList'),msg=el('ordersMessage');
+ list.replaceChildren();msg.textContent='جارٍ تحميل الطلبات...';
+ try{
+ const {data,error}=await db.from('customer_requests').select('id,status,machine_model,notes,created_at').eq('customer_id',user).order('created_at',{ascending:false});
+ if(error)throw error;if(!valid())return;
+ for(const r of data){
+ const card=document.createElement('article');card.className='card';
+ addText(card,'h3',r.machine_model+' — '+(orderStates[r.status]||r.status));
+ addText(card,'p',r.notes||'');addText(card,'small','رقم الطلب: '+r.id);
+ if(['quoted','accepted','rejected','completed'].includes(r.status)){
+ const q=await db.from('request_items').select('part_name,quantity,quoted_unit_price_usd,available').eq('request_id',r.id);
+ if(!valid())return;if(q.error)throw q.error;
+ let cents=0,available=0,complete=q.data.length>0;
+ for(const i of q.data){
+ const price=i.quoted_unit_price_usd;
+ addText(card,'p',(i.part_name||'قطعة غيار')+' | العدد: '+i.quantity+' | '+(i.available===true?'متوفر':i.available===false?'غير متوفر':'غير محدد')+(i.available===true&&price!==null?' | سعر الوحدة: '+usd(price):''));
+ if(i.available===true){available++;if(price===null||!Number.isFinite(Number(price))||Number(price)<0)complete=false;else cents+=Math.round(Number(price)*100)*i.quantity;}
+ else if(i.available!==false)complete=false;
+ }
+ addText(card,'strong',complete?'إجمالي القطع المتوفرة: '+usd(cents/100):'العرض غير مكتمل؛ تواصل مع المتجر.');
+ if(r.status==='quoted'){
+ for(const [accept,label] of [[true,'قبول عرض السعر'],[false,'رفض عرض السعر']]){
+ const b=addText(card,'button',label);b.type='button';b.disabled=accept&&(!complete||!available);
+ b.onclick=async()=>{if(!valid()||!confirm(label+'؟'))return;for(const x of card.querySelectorAll('button'))x.disabled=true;try{const res=await db.rpc('respond_to_quote',{p_request_id:r.id,p_accept:accept});if(res.error)throw res.error;await loadOrders();if(currentUser?.id===user)msg.textContent='تم تسجيل ردك.';}catch(e){if(currentUser?.id===user){await loadOrders();msg.textContent='تعذر تسجيل الرد. يرجى المحاولة مجدداً.';}}};
+ }
+ }
+ if(r.status==='accepted')addText(card,'p','تم قبول العرض. الدفع الإلكتروني غير متاح حالياً.');
+ }else if(r.status==='pending_review')addText(card,'p','سيظهر عرض السعر بعد مراجعته واعتماده من المتجر.');
+ if(!valid())return;list.append(card);
+ }
+ if(valid())msg.textContent=data.length?'عدد الطلبات: '+data.length:'لا توجد طلبات حتى الآن.';
+ }catch(e){if(valid())msg.textContent='تعذر تحميل الطلبات. حاول مجدداً.';}
+}
+el('refreshOrders').onclick=loadOrders;
 
 </script>
 </body>
