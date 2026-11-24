@@ -168,6 +168,18 @@ const el = id => document.getElementById(id);
 
 let currentUser = null;
 let busy = false;
+let checkout = null;
+try { checkout = JSON.parse(sessionStorage.getItem("jotyarensemele-checkout") || "null"); } catch (_) {}
+function applyCheckout(){
+  if (!checkout || typeof checkout.notes !== "string") return;
+  if (!el("notes").value) el("notes").value=checkout.notes.slice(0,4000);
+  if (typeof checkout.model==="string" && !el("machineModel").value) {
+    const model=checkout.model;
+    el("machineType").value=/^TC|حاصدة/.test(model)?"حاصدة":"جرار";
+    el("machineType").dispatchEvent(new Event("change"));
+    el("machineModel").value=model;
+  }
+}
 
 function showSession(session){
   currentUser = session?.user || null;
@@ -176,7 +188,7 @@ function showSession(session){
   el("ordersBox").hidden = !currentUser;
   el("ordersList").replaceChildren();
   el("ordersMessage").textContent = "";
-  if(currentUser) setTimeout(loadOrders,0);
+  if(currentUser) { applyCheckout(); setTimeout(loadOrders,0); }
 }
 
 db.auth.onAuthStateChange((event, session)=>{
@@ -392,6 +404,16 @@ el("requestForm").addEventListener("submit",async event=>{
       "سيقوم المتجر بمراجعة القطع المطلوبة والتواصل معك بشأن السعر والتوفر.\n" +
       "رقم الطلب: " + requestId;
 
+    if(checkout){
+      try {
+        if(Array.isArray(checkout.cart)){
+          const saved=JSON.parse(localStorage.getItem("jotyarensemele-cart-v1")||"[]");
+          if(JSON.stringify(saved)===JSON.stringify(checkout.cart)) localStorage.removeItem("jotyarensemele-cart-v1");
+        }
+        sessionStorage.removeItem("jotyarensemele-checkout");
+      } catch (_) {}
+      checkout=null;
+    }
     el("requestForm").reset();
     void loadOrders();
 
