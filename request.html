@@ -468,7 +468,7 @@ async function loadOrders(){
  b.onclick=async()=>{if(!valid()||!confirm(label+'؟'))return;for(const x of card.querySelectorAll('button'))x.disabled=true;try{const res=await db.rpc('respond_to_quote',{p_request_id:r.id,p_accept:accept});if(res.error)throw res.error;await loadOrders();if(currentUser?.id===user)msg.textContent='تم تسجيل ردك.';}catch(e){if(currentUser?.id===user){await loadOrders();msg.textContent='تعذر تسجيل الرد. يرجى المحاولة مجدداً.';}}};
  }
  }
- if(r.status==='accepted')addText(card,'p','تم قبول عرض السعر بنجاح. سيتواصل معك فريق المتجر لتنسيق الدفع والتوصيل...');
+ if(r.status==='accepted')addText(card,'p','تم قبول عرض السعر بنجاح. سيتواصل معك فريق المتجر لتنسيق الدفع والتوصيل.');
  }else if(r.status==='pending_review')addText(card,'p','سيظهر عرض السعر بعد مراجعته واعتماده من المتجر.');
  if(!valid())return;list.append(card);
  }
